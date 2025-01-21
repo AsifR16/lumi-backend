@@ -98,3 +98,5 @@ class GigModel extends ParentModel{
         stmt.finalize();
     }
 }
+
+module.exports = GigModel;

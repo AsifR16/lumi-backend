@@ -4,12 +4,13 @@ const JoinRouter = require("./routes/JoinRouter");
 const SessionModel = require("./models/SessionModel");
 const EventRouter = require("./routes/EventRouter");
 const GigRouter = require("./routes/GigRouter");
+const CampaignRouter = require("./routes/CampaignRouter");
 
 const app = express();
 const session = new SessionModel();
 const port = 3000 || process.env.port;
 
-const protectedUrl = ["/home","/gig/create-gig","/gig/gigs-by-college","/gig/all-gigs","/gig/all-gigs-by-skills","/gig/all-gigs-by-skills-college","/gig/apply-now","/gig/all-proposals","/gig/accept-proposal","/gig/reject-proposal","/event/create-event","/event/live-events","/event/all-events-by-college","/event/get-all-events"];
+const protectedUrl = ["/home","/gig/create-gig","/gig/gigs-by-college","/gig/all-gigs","/gig/all-gigs-by-skills","/gig/all-gigs-by-skills-college","/gig/apply-now","/gig/all-proposals","/gig/accept-proposal","/gig/reject-proposal","/event/create-event","/event/live-events","/event/all-events-by-college","/event/get-all-events","/campaign/create-campaign","/campaign/all-campaigns-by-college","/campaign/all-campaigns","/campaign/close-campaign"];
 
 app.use(express.json())
 app.use((req, res, next) => {
@@ -29,6 +30,7 @@ app.use("/login/",LoginRouter);
 app.use("/join/",JoinRouter);
 app.use("/event/",EventRouter);
 app.use("/gig/",GigRouter);
+app.use("/campaign/",CampaignRouter);
 
 app.get("/home",(req,res)=>{
     res.send("Hello world");

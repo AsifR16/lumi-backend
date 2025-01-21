@@ -5,3 +5,5 @@ class ProposalModel extends ParentModel{
         super("proposals");
     }
 }
+
+module.exports = ProposalModel;

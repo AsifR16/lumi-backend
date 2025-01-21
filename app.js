@@ -5,12 +5,13 @@ const SessionModel = require("./models/SessionModel");
 const EventRouter = require("./routes/EventRouter");
 const GigRouter = require("./routes/GigRouter");
 const CampaignRouter = require("./routes/CampaignRouter");
+const ReferralRouter = require("./routes/ReferralRouter");
 
 const app = express();
 const session = new SessionModel();
 const port = 3000 || process.env.port;
 
-const protectedUrl = ["/home","/gig/create-gig","/gig/gigs-by-college","/gig/all-gigs","/gig/all-gigs-by-skills","/gig/all-gigs-by-skills-college","/gig/apply-now","/gig/all-proposals","/gig/all-accepted-proposal","/gig/accept-proposal","/gig/reject-proposal","/event/create-event","/event/live-events","/event/all-events-by-college","/event/get-all-events","/campaign/create-campaign","/campaign/all-campaigns-by-college","/campaign/all-campaigns","/campaign/close-campaign"];
+const protectedUrl = ["/home","/gig/create-gig","/gig/gigs-by-college","/gig/all-gigs","/gig/all-gigs-by-skills","/gig/all-gigs-by-skills-college","/gig/apply-now","/gig/all-proposals","/gig/all-accepted-proposal","/gig/accept-proposal","/gig/reject-proposal","/event/create-event","/event/live-events","/event/all-events-by-college","/event/get-all-events","/campaign/create-campaign","/campaign/all-campaigns-by-college","/campaign/all-campaigns","/campaign/close-campaign","/referral/create-job","/referral/get-all-jobs","/referral/get-jobs-by-ex","/referral/get-jobs-by-location","/referral/delete-jobs","/referral/get-jobs-by-userid"];
 
 app.use(express.json())
 app.use((req, res, next) => {
@@ -31,6 +32,7 @@ app.use("/join/",JoinRouter);
 app.use("/event/",EventRouter);
 app.use("/gig/",GigRouter);
 app.use("/campaign/",CampaignRouter);
+app.use("/referral/",ReferralRouter);
 
 app.get("/home",(req,res)=>{
     res.send("Hello world");

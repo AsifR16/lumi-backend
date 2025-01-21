@@ -79,24 +79,6 @@ class GigModel extends ParentModel{
             return -1;
         }
     }
-
-    getUnderReviewProposal(gigId){
-        const sql = `SELECT * FROM gigs WHERE gigId:? AND status="review"`;
-        const stmt = this.db.prepare(sql);
-        stmt.all([gigId],(err,rows)=>{
-            if(err){
-                console.error(err.message);
-                return -1;
-            }else{
-                if(rows.length===0){
-                    return 0;
-                }else{
-                    return rows;
-                }
-            }
-        });
-        stmt.finalize();
-    }
 }
 
 module.exports = GigModel;

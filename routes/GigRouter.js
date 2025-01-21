@@ -131,7 +131,7 @@ router.get("/all-proposals",(req,res)=>{
 
 router.get("/all-accepted-proposal",(req,res)=>{
     const {gigId} = req.body;
-    const rows = acceptedProposal.searchBy({gigId:gigId});
+    const rows = proposal.getAllAcceptedProposal(gigId);
     if(rows!=-1){
         if(rows!=0){
             res.status(200).json({errorCode:0,data:rows}); // success

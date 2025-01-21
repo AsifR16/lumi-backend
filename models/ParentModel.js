@@ -46,7 +46,7 @@ class ParentModel{
     update(option){
         const sql = `UPDATE TABLE ${this.tablename} SET ${Object.keys(option)[1]}=? WHERE ${Object.keys(option)[0]}=?`;
         const stmt = this.db.prepare(sql);
-        stmt.run(Object.values(option),(err)=>{
+        stmt.run([Object.values(option)[1],Object.values(option)[0]],(err)=>{
             if(err){
                 console.error(err.message);
                 return -1;

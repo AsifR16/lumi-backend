@@ -9,7 +9,7 @@ const app = express();
 const session = new SessionModel();
 const port = 3000 || process.env.port;
 
-const protectedUrl = ["/home","/gig/create-gig","/gig/gigs-by-college","/gig/all-gigs","/gig//all-gigs-by-skills","/gig//all-gigs-by-skills-college"];
+const protectedUrl = ["/home","/gig/create-gig","/gig/gigs-by-college","/gig/all-gigs","/gig/all-gigs-by-skills","/gig/all-gigs-by-skills-college","/gig/apply-now","/gig/all-proposals","/gig/accept-proposal","/gig/reject-proposal","/event/create-event","/event/live-events","/event/all-events-by-college","/event/get-all-events"];
 
 app.use(express.json())
 app.use((req, res, next) => {

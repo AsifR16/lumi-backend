@@ -4,8 +4,9 @@ class GigModel extends ParentModel{
     constructor(){
         super("gigs");
     }
+
     getAllGigs(){
-        const sql = "SELECT * from gigs";
+        const sql = "SELECT * from gigs WHERE freelancerFound=0";
         this.db.all(sql,(err,rows)=>{
             if(err){
                 console.error(err.message);
@@ -19,8 +20,9 @@ class GigModel extends ParentModel{
             }
         });
     }
+
     getAllGigsByCollege(college){
-        const sql = `SELECT * FROM gigs WHERE college=?`;
+        const sql = `SELECT * FROM gigs WHERE college=? AND freelancerFound=0`;
         const stmt = this.db.prepare(sql);
         stmt.all([college],(err,rows)=>{
             if(err){
@@ -28,9 +30,9 @@ class GigModel extends ParentModel{
                 return -1;
             }else{
                 if(rows.length === 0){
-                    return rows;
-                }else{
                     return 0;
+                }else{
+                    return rows;
                 }
             }
         });
@@ -56,6 +58,7 @@ class GigModel extends ParentModel{
             return -1;
         }
     }
+
     getAllGigsByCollegeAndSkills(college,skills){
         const allGigs = this.getAllGigsByCollege(college);
         const skillsGigs=[];
@@ -75,5 +78,23 @@ class GigModel extends ParentModel{
         }else{
             return -1;
         }
+    }
+
+    getUnderReviewProposal(gigId){
+        const sql = `SELECT * FROM gigs WHERE gigId:? AND status="review"`;
+        const stmt = this.db.prepare(sql);
+        stmt.all([gigId],(err,rows)=>{
+            if(err){
+                console.error(err.message);
+                return -1;
+            }else{
+                if(rows.length===0){
+                    return 0;
+                }else{
+                    return rows;
+                }
+            }
+        });
+        stmt.finalize();
     }
 }

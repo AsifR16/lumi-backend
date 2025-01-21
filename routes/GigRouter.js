@@ -23,7 +23,8 @@ router.post("/create-gig",(req,res)=>{
         description:description,
         budget:budget,
         duration:duration,
-        skills:skills
+        skills:skills,
+        freelancerFound:0
     };
     const gigId = gig.add(option);
     if(gigId!=-1){
@@ -96,11 +97,13 @@ router.post("/apply-now",(req,res)=>{
     const sessionData = req.sessionData;
     const {proposal,gigId} = req.body;
     const option = {
+        id:generateUserId(),
         gigId:gigId,
         userId:sessionData["userId"],
         role:sessionData["role"],
         college:sessionData["college"],
-        proposal:proposal
+        proposal:proposal,
+        status:"review"
     };
     const val = proposal.add(option);
     if(val!=-1){
@@ -114,32 +117,54 @@ router.get("/all-proposals",(req,res)=>{
     const sessionData = req.sessionData;
     const {gigId} = req.body;
 
-    const rows = proposal.searchBy({gigId:gigId});
+    const rows = proposal.getUnderReviewProposal(gigId);
     if(rows!=-1){
         if(rows!=0){
             res.status(200).json({errorCode:0,data:rows}); // success
         }else{
-            res.status(200).json({errorCode:100}); // no proposals found
+            res.status(200).json({errorCode:200}); // no proposals found
         }
     }else{
         res.status(404).json({errorCode:500}); // database error
     }
 });
 
-router.get("/accept-proposal",(req,res)=>{
-    const sessionData = req.sessionData;
+router.get("/all-accepted-proposal",(req,res)=>{
     const {gigId} = req.body;
+    const rows = acceptedProposal.searchBy({gigId:gigId});
+    if(rows!=-1){
+        if(rows!=0){
+            res.status(200).json({errorCode:0,data:rows}); // success
+        }else{
+            res.status(200).json({errorCode:200}); // no accepted proposals found
+        }
+    }else{
+        res.status(404).json({errorCode:500}); // database error
+    }
+});
+
+router.post("/accept-proposal",(req,res)=>{
+    const sessionData = req.sessionData;
+    const {gigId,proposalId} = req.body;
     const options = {
         proposalBy:proposal.searchBy({gigId:gigId})["userId"],
         proposalTo:sessionData["userId"],
         gigId:gigId
     };
     const val = acceptedProposal.add(options);
+    const update = gig.update({id:gigId,freelancerFound:1});
+    const update2 = proposal.update({id:proposalId,status:"accepted"});
     if(val!=-1){
         res.status(200).json({errorCode:0}); // success
     }else{
         res.status(404).json({errorCode:500}); // database error
     }
+});
+
+router.post("/reject-proposal",(req,res)=>{
+    const {gigId,proposalId} = req.body;
+    const update = proposal.update({id:proposalId,status:"rejected"});
+    res.status(200).json({errorCode:0}); // success
 });
 
 module.exports = router;

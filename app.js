@@ -6,6 +6,8 @@ const EventRouter = require("./routes/EventRouter");
 const GigRouter = require("./routes/GigRouter");
 const CampaignRouter = require("./routes/CampaignRouter");
 const ReferralRouter = require("./routes/ReferralRouter");
+const ProfileRouter = require("./routes/ProfileRouter");
+const HomeRouter = require("./routes/HomeRouter");
 
 const app = express();
 const session = new SessionModel();
@@ -27,12 +29,15 @@ app.use((req, res, next) => {
         next();
     }
 });
+
 app.use("/login/",LoginRouter);
 app.use("/join/",JoinRouter);
 app.use("/event/",EventRouter);
 app.use("/gig/",GigRouter);
 app.use("/campaign/",CampaignRouter);
 app.use("/referral/",ReferralRouter);
+app.use("/profile/",ProfileRouter);
+app.use("/home/",HomeRouter);
 
 app.get("/home",(req,res)=>{
     res.send("Hello world");
